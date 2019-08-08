@@ -11,6 +11,11 @@ def RegionGrow(image,**kwargs):
     upper = 100
     mean = None
     tolerance = None
+
+    caster = sitk.CastImageFilter()
+    caster.SetOutputPixelType(sitk.sitkUInt8)
+    image = caster.Execute(image)
+
     for key, value in kwargs:
         if key == 'seeds':
             seeds = value
@@ -30,11 +35,10 @@ def RegionGrow(image,**kwargs):
         lower = mean - tolerance
         upper = mean + tolerance
 
-    regionGrow = sitk.ConnectedThreshold(image,
-                                         seedList=seeds,
-                                         lower=lower,
-                                         upper=upper)
-    return regionGrow
+    regionGrow = sitk.ConnectedThreshold(image, seedList=seeds,
+                                      lower=lower, upper=upper)
+
+    return sitk.RescaleIntensity(regionGrow)
 
 def GaborFilters(image):
     return 0
@@ -108,11 +112,13 @@ def FrangiFilters(imageR):
     # writer.SetFileName(outputDirPath + 'afterMorphologyThresh.nrrd')
     # writer.Execute(sitk.RescaleIntensity(resThresholded))
 
-    return sitk.RescaleIntensity(resThresholded), filteredX, filteredY, filteredZ, sitk.RescaleIntensity(sitk.GetImageFromArray(result)), sitk.RescaleIntensity(res)
+    return sitk.RescaleIntensity(resThresholded)\
+        # , filteredX, filteredY, filteredZ, sitk.RescaleIntensity(sitk.GetImageFromArray(result)), sitk.RescaleIntensity(res)
 
 def GetVesselsFromITK(imageSITK, **kwargs):
     imageArray = sitk.GetArrayFromImage(imageSITK)
-    image = itk.GetImageFromArray(imageArray)
+    imageTemp = itk.GetImageFromArray(imageArray)
+
     sigma = 1
     alpha = 1
     alpha2 = 2
@@ -121,6 +127,9 @@ def GetVesselsFromITK(imageSITK, **kwargs):
     ImageType = itk.Image[PixelType, Dimension]
     GaussSigmas = [3, 2, 2]
 
+    castImageFilter = itk.CastImageFilter[imageTemp, ImageType].New()
+    castImageFilter.SetInput(imageTemp)
+    image = castImageFilter.GetOutput()
     # Smoothing
     SmoothFilterType = itk.SmoothingRecursiveGaussianImageFilter[ImageType, ImageType]
     smoothingFilter = SmoothFilterType.New()
@@ -149,12 +158,14 @@ def GetVesselsFromITK(imageSITK, **kwargs):
     vesselnessFilter.SetAlpha2(alpha2)
     vesselsImage = vesselnessFilter.GetOutput()
 
-    writerType = itk.ImageFileWriter[vesselsImage]
-    writer = writerType.New()
-    writer.SetInput(vesselsImage)
-    writer.SetFileName(
-        'C:/Users/duso/PycharmProjects/Semestralni_Prace/Registration/Frangis/RegistrationTests/test/HessianFilter_XXXX.nrrd')
-    writer.Update()
+    return sitk.GetImageFromArray(itk.GetArrayFromImage(vesselsImage))
+    # writerType = itk.ImageFileWriter[vesselsImage]
+    # writer = writerType.New()
+    # writer.SetInput(vesselsImage)
+    # writer.SetFileName(
+    #     'C:/Users/duso/PycharmProjects/Semestralni_Prace/Registration/Frangis/RegistrationTests/test/HessianFilter_XXXX.nrrd')
+    # writer.Update()
+    return
 
 def TresholdBySeedsMean(image,**kwargs):
     magicConst = 30
@@ -191,7 +202,7 @@ def TresholdBySeedsMean(image,**kwargs):
     binarized = np.where(numpyImage > 0, 1, 0)
     res2 = morphology.remove_small_objects(binarized.astype(bool), min_size=20, connectivity=2).astype(int)
 
-    return res, res2
+    return res, sitk.RescaleIntensity(sitk.GetImageFromArray(res2))
 
 def getSeeds(image):
     imageArray = sitk.GetArrayFromImage(image)
@@ -203,7 +214,7 @@ def getSeeds(image):
 
     for d in range(detph / magicConst, detph - detph / magicConst, magicConst):
         oneSlice = imageArray[d][:][:]
-        oneSliceDenoised = oneSlice.copy()
+        oneSliceDenoised = np.uint8(oneSlice.copy())
 
         clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(5, 5))
         cl1 = clahe.apply(oneSliceDenoised)
@@ -219,7 +230,7 @@ def getSeeds(image):
         if len(keyPoints) > 0:
             tempPoint = []
             for point in keyPoints:
-                p = (int(point.pt[0]), int(point.pt[1]))
+                p = (int(point.pt[0]), int(point.pt[1]),int(d))
                 seeds.append(p)
                 tempPoint.append(p)
                 print p
@@ -234,40 +245,3 @@ def getSeeds(image):
 
     meanValRes = meanVal/countPixels
     return seeds, meanValRes
-
-# def ThresholdingOtsuVesselSegmentation(image, **kwargs):
-#
-#     caster = sitk.CastImageFilter()
-#     caster.SetOutputPixelType(sitk.sitkUInt8)
-#
-#     imageUint8 = caster.Execute(image)
-#
-#     gaussFilter = sitk.SmoothingRecursiveGaussianImageFilter()
-#     bluered = gaussFilter.Execute(imageUint8)
-#     writer = sitk.ImageFileWriter()
-#     writer.SetFileName('C:/Users/duso/PycharmProjects/Semestralni_Prace/Registration/Frangis/RegistrationTests/FInal_Registration_Folder/Results/test.nrrd')
-#     writer.Execute(bluered)
-#
-#     # only livers image array
-#     liversOnlyArray = sitk.GetArrayFromImage(bluered) > 0
-#     writer.SetFileName('C:/Users/duso/PycharmProjects/Semestralni_Prace/Registration/Frangis/RegistrationTests/FInal_Registration_Folder/Results/testX.nrrd')
-#     writer.Execute(sitk.GetImageFromArray(liversOnlyArray))
-#
-#
-#     # define image filter using otsu
-#     otsuThresholdFilter = sitk.OtsuThresholdImageFilter()
-#     otsuThresholdFilter.SetInsideValue(1)
-#     otsuThresholdFilter.SetOutsideValue(0)
-#     thresholdedImage = otsuThresholdFilter.Execute(sitk.GetImageFromArray(liversOnlyArray))
-#
-#     thresholdedImageRescaled = sitk.RescaleIntensity(thresholdedImage)
-#
-#     writer.SetFileName('C:/Users/duso/PycharmProjects/Semestralni_Prace/Registration/Frangis/RegistrationTests/FInal_Registration_Folder/Results/test2.nrrd')
-#     writer.Execute(thresholdedImageRescaled)
-#
-#     thresholdedImageArr = sitk.GetArrayFromImage(thresholdedImage) * liversOnlyArray
-#
-#     finalThresholdedImage = gaussFilter.Execute(sitk.GetImageFromArray(thresholdedImageArr))
-#     writer.SetFileName('C:/Users/duso/PycharmProjects/Semestralni_Prace/Registration/Frangis/RegistrationTests/FInal_Registration_Folder/Results/test3.nrrd')
-#     writer.Execute(finalThresholdedImage)
-#     return finalThresholdedImage
