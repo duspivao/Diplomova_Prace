@@ -2,6 +2,11 @@ import os
 import SimpleITK as sitk
 import types
 import datetime
+from mayavi import mlab
+
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+import numpy as np
 
 
 def saveImageAsNrrd(image, identifier, **kwargs):
@@ -194,3 +199,17 @@ def readNrrdToImage(folder, **kwargs):
         saveImageAsNrrd(imageToReturn, identifier, outputFolder=outputFolder, useTimeStampName=useTimeStampName)
 
     return imageToReturn
+
+def maskToLivers(img, mask):
+    image = sitk.GetArrayFromImage(img)
+    mask = sitk.GetArrayFromImage(mask)
+    maskedImage = image*mask
+    return sitk.GetImageFromArray(maskedImage)
+
+def showImageInPerspektive(image):
+
+    # mlab.contour3d(sitk.GetArrayFromImage(image), color = (1., 0., 0.1))
+    mlab.contour3d(image, color=(1., 0., 0.1))
+    # Nice view from the front
+
+    mlab.show()

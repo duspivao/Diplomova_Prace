@@ -8,7 +8,11 @@ import sed3
 import SimpleITK as sitk
 import numpy as np
 import sys
+from mayavi import mlab
 
+# moving = DataPreparation.readDICOMSerieToImage('C:/ZCU/3Dircadb1/3Dircadb1.1/PATIENT_DICOM')
+# ed = sed3.sed3(moving)
+# ed.show()
 
 test0 = 'C:/Users/duso/PycharmProjects/Semestralni_Prace/Registration/Frangis/RegistrationTests/test/Reg_8_GaborliversSmall.nrrd'
 test = 'test/4-150cc OMNIPAQUE-36663'
@@ -67,6 +71,8 @@ def GetMaskForLiversSegmentation(image):
         ed = sed3.sed3(sitk.RescaleIntensity(regionGrow))
         ed.show()
 
+outPutFolder = 'C:/ZCU/Diplomka/Dataset/01/RESULTS/VesselSegmentation/'
+
 # GetMaskForLiversSegmentation(DataPreparation.readNrrdToImage(folder=test0,saveImageToNrrd=False))
 #
 # inputImage1 = DataPreparation.readDICOMSerieToImage(folder=test, saveImageToNrrd=False)
@@ -75,22 +81,33 @@ def GetMaskForLiversSegmentation(image):
 # ed.show()
 inputImage2 = DataPreparation.readNrrdToImage(folder=test0,saveImageToNrrd=False)
 
-rg = VesselSegmentation.RegionGrow(inputImage2)
-writer=sitk.ImageFileWriter()
-writer.SetFileName('C:/Users/duso/PycharmProjects/Semestralni_Prace/Registration/Frangis/RegistrationTests/test/RegionGrow.nrrd')
-writer.Execute(rg)
+# fixedRMHD = 'C:/ZCU/Diplomka/Dataset/02/summer-eight-blossom-table_diet-kitten_4_45280cdef17c50e470ef9f9990a3d6c9ed15c1e35e84bd43611cfa014abee817_v0.mhd'
+# reader = sitk.ImageFileReader()
+# reader.SetFileName(fixedRMHD)
+# inputImage2 = reader.Execute()
 
-ff = VesselSegmentation.FrangiFilters(inputImage2)
-writer.SetFileName('C:/Users/duso/PycharmProjects/Semestralni_Prace/Registration/Frangis/RegistrationTests/test/FrangiFilters.nrrd')
-writer.Execute(ff)
+# rg = VesselSegmentation.RegionGrow(inputImage2)
+writer=sitk.ImageFileWriter()
+# writer.SetFileName(outPutFolder+'RegionGrow.nrrd')
+# writer.Execute(rg)
+# DataPreparation.showImageInPerspektive(rg)
+#
+#
+#
+# ff = VesselSegmentation.FrangiFilters(inputImage2)
+# writer.SetFileName(outPutFolder+'FrangiFilters.nrrd')
+# writer.Execute(ff)
+# DataPreparation.showImageInPerspektive(ff)
 
 sm = VesselSegmentation.TresholdBySeedsMean(inputImage2)
-writer.SetFileName('C:/Users/duso/PycharmProjects/Semestralni_Prace/Registration/Frangis/RegistrationTests/test/MeanValueOfSeedsThreshold.nrrd')
-writer.Execute(sm[1])
+writer.SetFileName(outPutFolder+'MeanValueOfSeedsThreshold.nrrd')
+writer.Execute(sitk.RescaleIntensity(sitk.GetImageFromArray(sm[1])))
+DataPreparation.showImageInPerspektive(sm[1])
 
-itkV = VesselSegmentation.GetVesselsFromITK(inputImage2)
-writer.SetFileName('C:/Users/duso/PycharmProjects/Semestralni_Prace/Registration/Frangis/RegistrationTests/test/ITKRegistrationHessian.nrrd')
-writer.Execute(itkV)
+# itkV = VesselSegmentation.GetVesselsFromITK(inputImage2)
+# writer.SetFileName(outPutFolder+'ITKRegistrationHessian.nrrd')
+# writer.Execute(itkV)
+# DataPreparation.showImageInPerspektive(itkV)
 
 # DataPreparation.saveImageAsNrrd(rg,'test',outputFolder='C:/Users/duso/PycharmProjects/Semestralni_Prace/Registration/Frangis/RegistrationTests/test/', useTimeStampName=True)
 # GetSeedForLiversSegmentation(inputImage1)

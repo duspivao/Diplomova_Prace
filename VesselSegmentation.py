@@ -202,7 +202,7 @@ def TresholdBySeedsMean(image,**kwargs):
     binarized = np.where(numpyImage > 0, 1, 0)
     res2 = morphology.remove_small_objects(binarized.astype(bool), min_size=20, connectivity=2).astype(int)
 
-    return res, sitk.RescaleIntensity(sitk.GetImageFromArray(res2))
+    return res,res2, sitk.RescaleIntensity(sitk.GetImageFromArray(res2))
 
 def getSeeds(image):
     imageArray = sitk.GetArrayFromImage(image)
