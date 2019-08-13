@@ -1,0 +1,364 @@
+\documentclass{thesis}%
+\usepackage[T1]{fontenc}%
+\usepackage[utf8]{inputenc}%
+\usepackage{lmodern}%
+\usepackage{textcomp}%
+\usepackage{lastpage}%
+\usepackage{graphicx}%
+\usepackage{caption}%
+\usepackage{indentfirst}%
+\usepackage{titlesec}%
+\usepackage{amsfonts}%
+\usepackage{amsmath}%
+
+
+
+
+
+ 
+\renewcommand{\listfigurename}{Seznam obrázků}
+\captionsetup[table]{name=Tabulka}
+\captionsetup[figure]{name=Obr.}
+\renewcommand\listtablename{Seznam tabulek}
+\renewcommand{\contentsname}{Obsah}
+\renewcommand{\refname}{Seznam zdrojů}
+\renewcommand{\abstractname}{Abstrakt}
+
+
+
+
+\begin{document}%
+%TITLE PAGE SETTINGS%
+\begin{titlepage}
+    \begin{center}
+        \vspace*{0.6cm}
+        
+
+        
+        \includegraphics[width=0.7\textwidth]{zcu.png}
+        
+        Západočeská univerzita v Plzni\\
+        Fakulta aplikovaných věd\\       
+        Katedra kybernetiky\\
+
+        \vspace{4 cm}
+     \textbf{DIPLOMOVÁ PRÁCE}
+        
+        \vspace{0.5cm}
+        Modelování cévního řečiště jater registrací obrazových dat s různým rozlišením
+        
+        \vspace{6cm}
+   \end{center}    
+
+\begin{tabular}[t]{@{}l} 
+ \textbf{PLZEŇ, 2018}
+\end{tabular}
+\hfill% move it to the right
+\begin{tabular}[t]{l@{}}
+   \textbf{Bc. Ondřej DUSPIVA}
+\end{tabular}
+        
+        \vfill
+\end{titlepage}
+%TITLE PAGE SETTINGS%
+%Disclaimer%
+\textbf{Prohlášení}
+
+\vspace{0.6cm}
+
+Předkládám tímto k posouzení a obhajobě diplomovou práci zpracovanou na závěr
+studia na Fakultě aplikovaných věd Západočeské univerzity v Plzni.\\
+Prohlašuji, že jsem diplomovou práci vypracoval samostatně a výhradně s použitím
+odborné literatury a pramenů, jejichž úplný seznam je její součástí.\\*[2cm]
+
+\begin{tabular}[t]{@{}l} 
+ \textbf{V Plzni dne ..............................}
+\end{tabular}
+\hfill% move it to the right
+\begin{tabular}[t]{l@{}}
+    \textbf{..............................}\\
+   \textbf{Bc. Ondřej DUSPIVA}
+\end{tabular}
+\newpage 
+
+\begin{abstract}
+Tato práce se zabývá...\\*[1cm]
+\textbf{Klíčová slova:} Výpočetní tomografie, registrace obrazových dat, modelávní cévního řečiště,...
+
+
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\chapter{Úvod}
+Počítačové vidění je rychle se rozvíjející oblastí kybernetiky, která pomáhá v různých aplikacích. Hlavním cílém této oblasti je rozpoznávání obrazu respektive získavání informací ze zachycených obrazů.
+Ty je pak možné použít například v oblasti automatizace průmyslu pro autonomní průmyslové roboty, detekci jevů například v bezpečnostním kamerovém systému, interakci člověka s počítačem či k realizaci
+autonomního řízení automobilů. Počítačové vidění nachází často uplatnění i v oblasti medicíny, kde je možné automaticky pomocí software ze získáaných medicínských dat a snímků provádět například automatickou
+diagnózu.\\
+Díky velkému množství zobrazovacích metod využiváných v oblasti medicíny a díky moderním technikám počítačového vidění je možné usnadnit lékařům diagnózu a to často s využitím kombinace několika
+zobrazovacích metod.\\
+
+\chapter{Výpočetní tomografie}
+\section{Zobrazovací metody v medicíně}
+Zobrazovací metody jsou definován ve Velkém lékařském slovníku následovně:
+lékařské vyšetřovací metody umožňující zobrazení orgánů a jejich částí v živém organismu bez narušení jejich životnosti. Kromě vlastního zobrazení struktury umožňují mnohé moderní metody i posouzení funkčního stavu. Z. m. využívají různých fyzikálních principů a k jejich rozvoji přispěl mj. i rozvoj počítačové techniky. K hlavním metodám patří rentgenové vyšetření v mnoha modifikacích vč. CT, ultrazvukové vyšetření ultrasonografie, magnetická rezonance MRI, izotopová vyšetření, PET aj. Zocor – simvastin, hypolipidemikum ze skupiny statinů)\cite{hugo}\\
+
+
+\section{Rentgen}
+Rentgenové záření \footnote[1]{Rentgenové zářeí objevil v roce 1895 německý fyzik W. C. Röntgen behěm studia výbojů v plynech}- elektromagnetické záření o velmi krátké vlnové délce 10nm - 0,001nm. Pokud je vlnová délka rentgenového záření velmi malá pak hovoříme a tvrdém rentgenovém záření, které má vyšší energie. Nižší energii pak mmá zcela logicky záření nazývané jako měkké má vetší vlnovou délku.
+\subsection{Princip vzniku rentgenového záření}
+Při dopadu katodového záření - proudu elektronů, které jsou urychleny elektrickým polem na kovovou anodu dochází ke vzniku záření, které proniká i neprůhlednými předměty. Jako důsledek zpomalování pohybu elektronů dopadajících velkou rychlostí na anodu, dochází kevzniku tzv. brzdného záření. Spektrum brzdného záření je spojité, jako důsledek spojitých změn frekvence. Dalším zářením, které vzniká je tzv. charakteristické záření, které ji získaly působením dopadajících elektron. V tomto případě pozorujeme čárové spektrum. Obě tato záření dohromady tvoří pouze asi 1\% z přeměné kynetické energie urychlených elektronů. Zbytek (cca 99\%) se přeměňuje na teplo.\\
+Princip zobrazovaní pomocí tohoto záření je potom fakt, že rozdílné látky a tkáně pohlcují jiné množství rentgenového záření. Na snímači je pak měřena intentizita dopadajícího zeslabeného rentgenového paprsku. Rentgenové záření se používá v naprosté většině přístrojů CT, jejichž funkce a princip je popsán v následující části.
+\section{Výpočetní tomografie CT}
+Výpočetní tomografie je metodou využívající matematické rekonstrukce obrazu získaného sérií rentgenových snímků. Pomocí této metody je možné regresivním způsobem zobrazovat měkké tkáně jako jsou například ledviny, svalstvo, mozek nebo další orgány jako jsou například játra. Touto metodou je možné zjistit patologické jevy, které se liší svou denzitou od okolní tkáně nebo okolí obecně.
+\subsection{Historie CT}
+Historie výpočetní tomografie sahá do roku 1963, kdy Allan Cormack (americký fyzik) vypracoval teorii o rekonstrukci tomografického řezu z několika sumačních snímků. V této teorii využil Allan Cormack gama záření. První skutečně použitelný tomograf byl však sestroj o necelých deset let později a to v roce 1972. Sestavil jej Godfrey Newbold Hounsfield. \footnote[2]{Allan Cormack a  Godfrey Newbold Hounsfield obdrželi za své objevy v roce 1979 Nobelovu cenu.} \\
+\begin{figure}[h]
+ \centering
+	\includegraphics[width=10cm]{EMI_CT.png}
+	\caption[EMI mark I]{EMI mark I sestrojený Godfrey Newbold Hounsfield v roce 1972}
+\end{figure}
+\null\\
+CT přístroje je možné rozdělit do několika generací:
+\begin{enumerate}
+	\item generace - tato generace využívá tzv. Housofieldův systém, který byl použit i u přístroje EMI Mark I, snímkovací systém se v této generaci posouvá lineárně přes celou délku zkoumaného subjektu v dané rovině. Otočení je o zhruba 10$^\circ$ - 15$^\circ$. Zpracování snímků a vytvoření rekonstrukce trvalo cca 300 sec.
+	\item generace - využívá stejný druh pohybu jako první generace, zmenšil se ovšem úghel mezi jednotlivými snímky na cca 3$^\circ$ - 10$^\circ$ a zvětšil se počet detektorů (až 60). Snížila se také doba rekonstrukce více než 10 a to na cca 20 sec.
+	\item generace - tato generace je nejvíce využívanou variantou v současnosti. Rentgenka snímkuje objekt širokým snopcem záření za stálé rotace o 360$^\circ$. Použito je několik stovek detektorů (řádově 400-600) na protilehlé matici vůči zářiči. Snímkování se provádí po méně jak 1$^\circ$ a probíhá kontinuálně po celou dobu otořky.  \footnote[3]{Pokračováníma 3. generace je potom tzv. spirální (helikální) CT. To umožňuje postupný a plynulý posun stolu se zkoumaným objektem. Tato metoda byla poprvé použita v přístroji společnosti Bio-Imaging Research v roce 1986.}
+	\item generace - Používá Rotující rentgenku, která opisuje celou kružnici záznam pak zajišťuje více než tisicovka stacionárním detekterů po obvodu. Problémem této generace je expozice okrajových detekterů, které jsou zasaženy rozptýleným a aodraženým zářením. 
+	\item generace - tzv. nutační systém. ten se skládá z matice stacionárních detektorů a rotující rentgenky. Detektory se na základě pozice rentgenky vycylují z kolmice tak aby na ně paprsky dopadly kolmo. Tento systém umožňuje například rekonstrukci řezů v jiné než axiální rovině. \footnote[4]{V současné době (cca od roku 1999) vznikly i tzv. multi-slice CT. Tyto přístroje jsou vybaveny několika systémy detektorů uspořádaných do kruhu a umožňují tím pádem zísat více řezů v jednom okamžiku.Tímto způsobem ještě více urychlují vyšetření na druhou stranu stoupá jejich cena a náročnost údržby.}
+	\item generace - tato generace jako zdroj záření používá elektronové dělo. Anoda je vlastně výsečí kolem čísti obvodu zkoumaného objektu a má několik ohnisek. Zařízení je buzeno současně na několika z ohniscích a detektory jsou umístěn do dvou prstenců okolo zkoumaného objektu. U této generace nedochází k žádnému pohybu. Zařízení je výše popsaným principem schopno snímkovat několik vrstev současně a to za extrémně krátkou dobu expozice, která se pohybuje okolo 50ms.
+\end{enumerate}
+\subsection{Princip CT}
+Principem výpočetní tomografie, jak již bylo zmíněno výše je skládání celkového obrazu z mnoha jednotlivých snímků. Na následujícím obrázku je vidět, že je nutné snímkovat zkoumaný objekt z mnoha úhlů, pokud by snímkování probíhalo, jen například ze 4 nebo 6 úhlů pak by výsledný obraz byl zatížen velkou chybou.
+\begin{figure}[h]
+ \centering
+	\includegraphics[width=10cm]{multiple_peojectionF.png}
+	\caption[Vliv počtu projekcí na výsledný obraz]{Vliv počtu projekcí na výsledný obraz. a) 2 projekce; b) 4 projekce; c) 8 projekcí; d) 16 projekcí; e) 64 projekcí (s použitím filtru); f) 64 projekcí (bez použití filtru)}
+\end{figure}
+ U nejčastějšího typu CT přístrojů je rotuje rentgenka v gantře kolem pacienta a v pulzech trvajících 1-4ms vysílá vějířovitý rentgenový paprsek. Ten prochází snímkovaným objektem, kde je částečně absorbován. Po obvodu gántry jsou scintilační detektory, které zaznamenávají dopadající záření respektive míru jeho zeslabení. Tato informace je uložena do počítače a následně vyhodnocena. Obraz je potom informací o tom, jak jednotlivé voxely \footnote[5]{Voxel martix element - analogie pixelu v planárním obraze. Oproti dvojrozměrnému pixelu mají voxely ještě hloubku.}. Z pohledu medicíny je výsledkem výpočetní tomografie obraz pacienta v příčné (axiální) vrstvě, kdežto u rentgenovýh snímků vzniká obraz v frontální či sagitální vrstvě (v závislosti na poloze pacienta).\\
+Absorbce rentgenového záření pro homogenní absorbér je dána následujícím vztahem:
+\begin{equation}
+ \centering
+	I = I_{0}e^{-( \mu_{1}*x_{1} + \mu_{2}*x_{2} + ... + \mu_{y}*x_{y})}	
+\end{equation}
+Kde $ I_{0}$ je počáteční intezinta záření před průchodem zkoumaným objektem. $ \mu_{1}*x$ je pak součin lineárního koeficintu zeslabení $\mu$ a tloušťky homogenní části prostředí $x$. Výpočet zeslabení $I$ můžeme graficky znázornit následně:
+\begin{figure}[h!]
+ \centering
+	\includegraphics[width=6cm]{zeslabeni_rtg_zar.png}
+	\caption[Výpočet absorbce]{Výpočet zeslabení intentizi záření po prochodu absorbérem.}
+\end{figure}
+Nyní na jednoduchém proncipu můžeme vysvětlit na jednoduchém příkladu princip jakým je dopočítána informace pro výsledný obraz CT. Předpokládejme čtverce rozdělený na čtyři homogenní absorbéry charatkerizované zeslabením záření pro jednoduchost vyjádřeného $x_{1} - x_{4} $ s danými hodnotami. Tak jak je naznačeno na následujícím schématu:
+\begin{figure}[h!]
+ \centering
+	\includegraphics[width=6cm]{princip_CT.png}
+	\caption[Princip výpočtu zeslabení voxelů]{Zjednodušený příklad principu výpočtu zeslabení jednotlivých voxelů}
+\end{figure}
+Hodnoty jednotlivých komponent $x_{1} - x_{4}$ jsou pro nás ovšem neznámou. Změřit je tedý možné jen zeslabení intentizity vždy v dané rovině (hodnoty v červených a modrých obdélnících). Díky těmto hodnotám jsme ale schopni sestavit 4 rovnice o 4 neznýámých:
+\begin{equation}
+ \centering
+\begin{array}[h]{c}
+	x_{1} + x_{2} = 4 \\
+	x_{3} + x_{4} = 9 \\
+	x_{1} + x_{3} = 7 \\
+	x_{2} + x_{4} = 6
+\end{array}
+\end{equation}
+Touto jednoduchou soustavou rovnic jsme pak schopni dopočítat jednotlivé parametry $x_{1} - x_{4}$. \\
+Pokud se jedná o nehomogenní absorbér dostává rovnice (1) tento tvar:
+\begin{equation}
+ \centering
+	I(x) = I_{0}(x)e^{-(\int\mu(x,y) dy) }
+\end{equation}
+Logaritmování tohoto vztahu dostaneme:
+\begin{equation}
+ \centering
+\begin{array}[h!]{c}
+	p(x) = -\left[\frac{I(x)}{I_{0}(x)}\right] \\
+	p(x) = \int\mu (x,y) dy
+\end{array}
+\end{equation}
+V praxi se ovšem vychází při řešení úlohy přiřazení správné hodnoty absorbce jednotlivým voxelům z tzv. Radonova transormace \footnote[6]{Autorem je Prof. Dr.phil. Johann Karl Gustav Radon narozen v Děčíne v roce 1887.} a zpětná Radonova transformace, což je integrální transformace spočívající v integrovýání funkce přes přímky. Při výpočtu CT obrazu se používá následující tvar:
+\begin{equation}
+ \centering
+	p(r,\theta) = \int_{-\infty}^{\infty}\int_{-\infty}^{\infty} f(x,y) \delta(x cos\theta +y sin \theta - r)dx dy
+\end{equation}
+kde $f(x,y)$ reprezentuje $\mu (x,y) dy$ z rovnice (1), $r$ je pozice zdroje rentgenového záření a $\theta$ je úhel jeho natočení. Z tohoto vztahu je pak možné odvodit zpětnou Radonovu transformaci a s jejím použitím a využitím tzv. řezového teorému je pak možné získat dokonalý obraz pro všechny úhly. Radonova transformace se ovšem v praxi ukázala jako nestabilní a tak je v praxi nahrazena metodou filtrované projekce a Fourierova transformace.
+\begin{figure}[ht!]
+ \centering
+	\includegraphics[width=6cm]{radonova_transformace.png}
+	\caption[Radonova transformace]{Princip Radonovy transformace graficky}
+\end{figure}
+\subsection{Hounsfieldovy jednotky}
+Hounsfieldova jednota (dále HU, někdy označované jako CT číslo) je denzintní jednotka vyjadřující míru absorpce jednoho voxelu vzhledem k refereční hodnotě absorbce vody (pro vodu HU = 0). Výpočet HU je definován následujícím vztahem:
+\begin{equation}
+ \centering
+	HU = \frac{\mu -  \mu_{\omega}}{\mu_{\omega}}k
+\end{equation}
+Kde $k=10^3$ - je konstanta, $\mu$ - je koeficient zeslabení tkáně a $\mu_{\omega}$ - je koeficient zeslabení vody ( $ = 0,22cm^{-1}$). Ze vztahu (6) je patrné, že se HU je bezrozměrná veličina.\\
+Rekonstruovaný CT obraz je nejčastěji zobrazován v odstínech šedi. Po provedení počítačových výpočtů je tak možné definovat rozsah zobrazovaných dat, právě rozsahem HU. Ten je pak přepoškálován a na vzniká tak grafická podoba CT snímku v odstínech šedi odpovídajících právě HU. Tímto je možné z naměřených dat analyzovat například pouze ty tkáně, na něž je vyšetření CT zaměřeno. Následující obrázek ukazuje vliv volby rozsahu na snímku plic:
+\begin{figure}[ht!]
+ \centering
+	\includegraphics[width=10cm]{ruzna_HU.jpg}
+	\caption[Nastavení rozsahu HU]{Nsatavení rozsahu zobrazeného HU pro CT snímek plic}
+\end{figure}
+V následující tabulce jsou pak zapsány přibližné hodnoty HU pro typické tkáně a orgány:\\
+\begin{center}
+\begin{tabular}{c|c}
+ \centering
+\bfseries \bfseries Tkáň & \bfseries Densita HU\\
+\hline \hline
+vzduch                      & -1000\\
+tuk                            & -50 - (-100)\\
+voda                         & 0\\
+likvor                         & 5\\
+bílá hmota mozková  & 30\\
+šedá hmota mozková& 34\\
+krev                           & 47\\
+játra                          & 40 - 60\\
+svaly                         & 35 - 75\\
+vazivové tkáně         & 60 - 90\\
+chrupavka                 & 80 - 130 \\
+kost                           & 1000 - 3000 
+\end{tabular}
+\captionof{table}{Orientační hodnoty HU}
+\end{center}
+\subsection{Mikro CT}
+V této diplomové práci je jedním z cílů kombinovat data z Micro CT a klasického "makro" CT přístroje. V prvním zmíněném případě snímkování probíhá na Xradia MicroCT. Tento přístroj umožňuje skenovat vzorky do hnmotnosti 1kg a rozměru 100 mm. Rozlišovací schopnost je pod 1$\mu$  a velikost pixelu až 0,56$\mu$. Narozdíl od klasického CT microCT přístroje mají statický zářič i detektory a otáčí se přímo zkoumaný objekt. Snímkování pomocí těchto přístrojů také trvá výrazně delší dobu (standartně několik hodin).
+\begin{figure}[ht!]
+ \centering
+	\includegraphics[width=10cm]{xradia.jpg}
+	\caption[Micro CT Xradia]{Micro CT Xradia (MicroXCT-200) }
+\end{figure}
+
+\chapter{Příprava obrazových dat}
+
+\chapter{Registrace obrazových dat}
+Problém fúze obecně $N$ snímků s různým rozlišením a jinou orientací je v podstatě problémem registrace obrazových dat. Zde je cílem prolnout dva snímky do jednoho. Tento cíl je možné přeformulovat jako hledání vhodné transformace, která zajístí že obrazy A a B budou po transformaci jednoho z nich totožné. Tedy bude platit:\\
+ $$A = Trans.(B) $$
+nebo
+$$ Trans.(A) = B$$
+Vzhledem k tomu, že v našem případě se budeme pokoušet registrovat dva obrazy přičemž jeden zobrazuje pouze část druhé, představme si \textbf{A} a \textbf{B} jako množiny a pak výše uvedený vztah můžeme definovat následujícím způsobem:
+$$A \subset Trans.(B)$$
+nebo 
+$$B \subset Trans.(A)$$
+K získání vhodné tranasformace mohou vést dvě cesty cesta přímá a iterativní. Přímé algoritmy registrace obrazových dat respektive nalezení vhodné transformace pracují na předpokladu, že máme dvojice bodů vzájemně si odpovídajících na každém z obrázků, jejichž fúzi se snažíme provést. V tomto případě je možné nalézt transformaci pomocí řešení soustavy lineárních rovnic a celý proces může fungovat jednokrokově. Pokud ovšem není možné přesně určit výše zmíněnou dvojici bodů na každých dvou obrazech které chceme prolnout je vhodnější iterativní přístup. Ten se v několika krocích snaží transformaci určenou jako počáteční modifikovat, tak aby došlo k co nejlepšímu spojení obrazů. \\
+Abychom dokázali určit, co která transformace je "lepší" je třeba najít veličinu, na níž kvalitu prolnutí obrazových dat budeme určovat. Jinými slovy hledáme funkci $\hat{T}$ takové, že platí:
+\begin{equation}
+ \centering
+	\hat{T} = arg \min_{T \in H}\mathbf{K}(I_{1}(x,y,z),\mathbf{g}(I_{2}(\mathbf{T}(x,y,z)))) 
+\end{equation}
+kde $\mathbf{K}$ je kriteriální funkcí určující míru podobnosti transformovaných obrázů. $\mathbf{T}$ je množina funkcí které pro trojrozměrný obraz zobrazují $\mathbb{R}^{3}\rightarrow\mathbb{R}^{3}$. $,\mathbf{g}$ je $\mathbb{R}\rightarrow\mathbb{R}$ - interpolační funkce. Funkce $\hat{T}$ nechť je potom hledanou tranformační funkcí.\\
+
+\section{Interpolace}
+Při transformaci obrazu dochází často k následujícímu problému: Mějme obraz $\mathbf{A}$ a celočíselný souřadnicový systém. Na zmíněný obraz použijeme transoformaci s použitím rotace, translace a dalších možných změn. Jelikož tato transformace je obecná mohou a často také vznikají reálné souřadnice. Pro rekonstrukci obrazu je ovšem nezbytné zobrazit výsledek v celočíselném souřadném systému. Právě za tímto účelem slouží interpolace výsledku, která s využitím hodnot jednotlivých pixelů v 2D obrazu voxelů v 3D obraze a celočíselnou mřížku k výpočtu nových hodnot jednotlivých pixelů/voxelů.
+ \subsection{Metoda nejblžšího souseda}
+Jinak se tato metad také nazývá "interpolace 0-tého řádu". Její nejvetší devízou je především rychlost. Princip je velmi jednoduchý - zkoumaný pixel získává hodnotu svého nejbližšího souseda. V praxi se často používá varianta zaokrouhlování souřadnic. Hlavními nevýhodami je samozřejmě nepřesnost ovšem na druhou stranu je použitelná pro všechny typy obrazů, jak již bylo zmíněno je velmi rychlá a je jí možné použít pro indexované a černobílé obrazy. Matematicky jí můžeme pro 2D obraz zapsat takto:
+\begin{equation}
+f(x,y) = \left\{
+	\begin{tabular}{c}
+                        $p(i,j)\: pro\: i - \frac{1}{2} < x \leq i+ \frac{1}{2},  j - \frac{1}{2} < y \leq j+ \frac{1}{2}$ \\
+		   $p(i,j+1)\: pro\: i - \frac{1}{2} < x \leq i+ \frac{1}{2},  j - \frac{1}{2} < y \leq j+ \frac{3}{2}$\\
+		   $p(i+1,j)\: pro\: i - \frac{1}{2} < x \leq i+ \frac{3}{2},  j - \frac{1}{2} < y \leq j+ \frac{1}{2}$\\ 
+		   $p(i+1,j+1)\: pro\: i - \frac{1}{2} < x \leq i+ \frac{3}{2},  j - \frac{1}{2} < y \leq j+ \frac{3}{2}$
+	\end{tabular}           
+    \right\}
+\end{equation}
+kde $(i,j)$ jsou body v prostoru s celočíselnými souřadnicemi, $p(i,j)$ hodnota pixelu na příslušných souřadnicích $(x,y)\in \mathbb{R}^2$.
+ \subsection{Bilineární interpolace}
+Tato interpolace využívá nikoliv jednoho, jako předchozí metoda, ale čtyři nejbližší pixely z nich počítá vážený průměr. Interpolovanému pixelu, je pak přiřazena hodnota právě váženého průměru. 
+\begin{equation}
+\begin{split}
+f(x,y) = (y-j) [(i+1-x)p(i,j+1)+(x-i)p(i+1,j+1)]+\\
++(j+1-y)[(i+1-x)p(i,jú+(x-i)p(i+1,j)]
+\end{split}
+\end{equation}
+Princip bilineární interpolace je znázorněn i na následujících schématech:
+\begin{figure}[ht!]
+ \centering
+	\includegraphics[width=3cm]{bil_int.png}
+	\includegraphics[width=3cm]{bil_intII.png}
+	\includegraphics[width=3cm]{bilinear_interpolationIV.png}
+	
+	\caption[Bilineární interpolace]{Bilineární interpolace}
+\end{figure}
+ \subsection{Bikubická interpolace}
+ Bikubická interpolace je dalším rozšířením na  dvourozměrnou pravidelnou mřížku. K jejímu výpoču se využívá například Langrangeových polynomů, kubického splinu nebo kubické konvoluce.
+ \begin{equation}
+\begin{split}
+f(x,y) = \sum\limits_{i,j=0}^3 c_{i}(x)c_{j}(y)f_{ij}
+\end{split}
+\end{equation}
+Kde $c_{i}(x)$ a $c_{j}(y)$  jsou kubické polynomy a $f_{ij}$ hodnota na jednotlivých pozicích tak jak je naznaženo na levém schématu z následujících dvou, které ukazují princip Bikubické interpolace.
+ \begin{figure}[ht!]
+  \centering
+	\includegraphics[width=6cm]{bikubicka2.png}
+
+	\caption[Bikubická interpolace]{Bikubická interpolace}
+\end{figure}
+ \subsection{Spline interpolace}
+\section{Rigid / Non-Rigid body registrace}
+
+\chapter{Formát DICOM}
+Snímky z lékařských vyšetření jsou reprezontovány datovým formátem DICOM, což je zkratka anglického \textbf{Digital Imaging and Communications in Medicine}. Jedná se o standart pro zobrazování a také skladování dat například z MRI nebo CT vyšetření. DICOM byl vytvořen v roce 1993 výborem \textbf{DICOM Standard Committee}\footnote[7]{První verze ACR/NEMA 300 byla uvolněna 1985. Následovala ARC/NEMA 2.0. V současné době je platný DICOM 3.0 z roku 1993} a jeho autorská práva vlastní asociace  \textbf{NEMA} (National Electrical Manufacturers Association)\footnote[8]{NEMA se rozhodla po zavedení výpočetní tomografie v 70. letech vytvořit v roce 1983 výbor pro nalezení standartu na přenos snímků a přidružených informací.}. Tento standart definuje způsob práce s daty a to například sdílení, mazání a jejich ukládání. Slouží také pro definici tisku, skenovaní a integraci do systému \textbf{PACS} (Picture Archiving and Communication System).\\
+Pro tuto práci je ovšem důležité že data úkladaná standartem DICOM, neobsahují pouze vlastní obrazová data, ale mnoho metadat. Jsou to například informace o pacientovi, průběhu a typu vyšetření, datu, kdy bylo vyšetření provedeno a pro tuto práci podstatné informace o měřítku. Jednotlivé datové soubory obsahují informace o tom, jak každý pixel v jednotlivých směrech odpovídá skutečnému rozměru.
+ 
+
+\chapter{Vlastní algoritmus}
+\begin{enumerate}
+\item Vzít microCT snímky
+\item Najít a indentifikovat cévy 
+\item vybrat N nejlepších snímků = největší informace = největší počet cév větších než D
+\item uložit je do vektoru s informacemi o jednotlivých objektech
+\item všechny CT snímky a najít cévy
+\item najít cévy
+\item Projít CT snímky najít njelepší shodu a transformaci
+\item použít transormaci na mikroCT a provést registraci
+\end{enumerate}
+
+\section{Předpoklady}
+\begin{enumerate}
+\item RYCHLOST!
+\item Přesnost
+\item Robustnost
+\item Nízká chybovost
+\end{enumerate}
+\section{Výběr dat }
+\section{Transformace obrazu}
+
+
+\chapter{Závěr}
+
+\newpage
+\listoffigures
+\listoftables
+
+\begin{thebibliography}{DUSO}
+  \bibitem[1]{hugo} Jan Hugo:
+    \emph{Velký lékařský slovník}. Maxdorf, Praha, 2015. ISBN: 978-80-7345-456-2 
+  \bibitem[0]{medbio} Jozef ROSINA, Leoš NAVRÁTIL:
+    \emph{Medicínská biofyzika}. Grada, Praha, 2005. ISBN: ISBN 80-247-1152-4
+ \bibitem[0]{lekbio} Vojtěch MORNSTEIN, Ivo HRAZDIRA:
+    \emph{Lékařská biofyzika a přístrojová technika}. Neptun, Brno, 2001. ISBN: 80-902896-1-4.
+ \bibitem[0]{bak1} Renáta Chylíková:
+    \emph{Výpočetní tomografie s vysokým rozlišením – jeho úloha a postavení v radiodiagnostice - Bakalářská práce}. Zdravotně sociální fakulta, Jihočeská univerzita v Českých Budějovicích, 2011.
+
+
+
+   \bibitem[WikiSkripta]{WikiSkripta} WikiSkripta:
+    \emph{Výpočetní tomografie a Hounsfieldovy jednotky}. \\
+    \verb|https://www.wikiskripta.eu/w/V\%C3\%BDpo\%C4\%8Detn\%C3\%AD_tomografie_a_Hounsfieldovy_jednotky|
+ \bibitem[Wikipedie]{Wikipedie} Wikipedie:
+    \emph{Výpočetní tomografie}. \\
+    \verb|https://cs.wikipedia.org/wiki/V\%C3\%BDpo\%C4\%8Detn\%C3\%AD_tomografie|
+ \bibitem[what-when-how]{what-when-how} what-when-how In Depth Tutorials and Information:
+    \emph{Gray-Scale Image Visualization}. \\
+    \verb|http://what-when-how.com/biomedical-image-analysis/gray-scale-image-visualization-biomedical-image-analysis/|
+\bibitem[SlideShare]{SlideShare}Archana Koshy:
+    \emph{Ct physics - II, 2016}.\\
+    \verb|https://www.slideshare.net/ArchanaKoshy/ct-physics-ii|
+
+\end{thebibliography}
+  
+%
+\end{document}
